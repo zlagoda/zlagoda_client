@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthProvider";
 
 function LoginForm() {
+
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
 
@@ -27,9 +28,9 @@ function LoginForm() {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(login, password);
-    auth.signin();
-    navigate(pathname, {replace: true});
+    auth.signin({ login, password }, () => {
+      navigate(pathname, { replace: true });
+    });
   };
 
   return (
@@ -45,6 +46,7 @@ function LoginForm() {
           placeholder="Input password"
           onChange={onPasswordChange}
         ></input>
+        <span>{auth.error}</span>
         <input type="submit"></input>
       </form>
     </div>

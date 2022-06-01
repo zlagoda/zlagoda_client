@@ -13,6 +13,8 @@ function RouteProtector({
   const location = useLocation();
 
   if (!auth.user) {
+    console.log(auth);
+    console.log("navigate to login");
     return <Navigate to="/" state={{ from: location }} replace />;
   }
 
