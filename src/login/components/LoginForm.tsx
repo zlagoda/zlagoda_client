@@ -23,8 +23,8 @@ function LoginForm() {
 
   const navigate = useNavigate();
   const state = useLocation().state as LocationState;
-  const pathname = state?.from?.pathname ?? "/dashboard/cashier";
   const auth = React.useContext(AuthContext);
+  const pathname = state?.from?.pathname ?? "/";
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();

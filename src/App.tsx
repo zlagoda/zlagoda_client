@@ -49,16 +49,23 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route
-            path="/dashboard"
-            element={
-              <RouteProtector>
-                <Dashboard />
-              </RouteProtector>
-            }
-          >
-            <Route path="cashier" element={<Cashier />} />
-            <Route path="manager" element={<Manager />} />
+          <Route path="/dashboard" element={<Dashboard />}>
+            <Route
+              path="cashier"
+              element={
+                <RouteProtector role="cashier">
+                  <Cashier />
+                </RouteProtector>
+              }
+            />
+            <Route
+              path="manager"
+              element={
+                <RouteProtector role="manager">
+                  <Manager />
+                </RouteProtector>
+              }
+            />
           </Route>
         </Routes>
       </AuthProvider>

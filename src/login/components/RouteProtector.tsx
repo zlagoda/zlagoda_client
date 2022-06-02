@@ -17,6 +17,9 @@ function RouteProtector({
     console.log("navigate to login");
     return <Navigate to="/" state={{ from: location }} replace />;
   }
+  if (role !== auth.user.role) {
+    return <Navigate to={"/dashboard/" + auth.user.role} replace />
+  }
 
   return children;
 };

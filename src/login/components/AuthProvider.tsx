@@ -3,6 +3,7 @@ import axios from "axios";
 import jwtDecode from "jwt-decode";
 
 interface User {
+  id: number; 
   login: string;
   role: string;
 }
@@ -34,11 +35,12 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   const [error, setError] = React.useState<string>("");
 
   const signin = ({ login, password }: Credentials, callback: VoidFunction) => {
-    axios.post("http://localhost:8080/login", { login, password }).then(
+    axios.post(process.env.REACT_APP_API_URL + "/login", { login, password }).then(
       (res) => {
         localStorage.setItem("jwt_token", res.data);
         const decoded: User = jwtDecode(res.data);
         setUser(decoded);
+        setError("");
         callback();
       },
       (err) => {

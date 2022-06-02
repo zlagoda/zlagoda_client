@@ -7,7 +7,7 @@ import { AuthContext } from "./components/AuthProvider";
 function Login() {
   const auth = React.useContext(AuthContext);
   if (auth.user) {
-    return <Navigate to="/dashboard/manager" replace />
+    return <Navigate to={"/dashboard/" + auth.user.role} replace />
   }
 
   return (
