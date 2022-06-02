@@ -67,6 +67,7 @@ function App() {
               }
             />
           </Route>
+          <Route path="*" element={<h1>404 Not found</h1>} />
         </Routes>
       </AuthProvider>
     </>
