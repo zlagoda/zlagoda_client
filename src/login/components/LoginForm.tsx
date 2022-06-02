@@ -28,6 +28,10 @@ function LoginForm() {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    if (!(login && password)) {
+      auth.setError("All input is required")
+      return;
+    }
     auth.signin({ login, password }, () => {
       navigate(pathname, { replace: true });
     });

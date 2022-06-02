@@ -18,6 +18,7 @@ interface AuthContextType {
   signin: (credentials: Credentials, callback: VoidFunction) => void;
   signout: (callback: VoidFunction) => void;
   error: string;
+  setError: Function;
 }
 
 export const AuthContext = React.createContext<AuthContextType>(null!);
@@ -55,7 +56,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     callback();
   };
 
-  const value: AuthContextType = { user, signin, signout, error };
+  const value: AuthContextType = { user, signin, signout, error, setError };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
