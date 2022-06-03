@@ -16,8 +16,8 @@ interface Credentials {
 
 interface AuthContextType {
   user: Token | null;
-  signin: (credentials: Credentials, callback: VoidFunction) => void;
-  signout: (callback: VoidFunction) => void;
+  signin: (credentials: Credentials, redirect: VoidFunction) => void;
+  signout: (redirect: VoidFunction) => void;
   error: string;
   setError: Function;
 }
@@ -48,7 +48,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, [user]);
 
-  const signin = ({ login, password }: Credentials, callback: VoidFunction) => {
+  const signin = ({ login, password }: Credentials, redirect: VoidFunction) => {
     axios
       .post(process.env.REACT_APP_API_URL + "/login", { login, password })
       .then(
@@ -57,7 +57,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
           const decoded: Token = jwtDecode(res.data);
           setUser(decoded);
           setError("");
-          callback();
+          redirect();
         },
         (err) => {
           setError(err.response.data);
@@ -65,10 +65,10 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
       );
   };
 
-  const signout = (callback: VoidFunction) => {
+  const signout = (redirect: VoidFunction) => {
     setUser(null);
     localStorage.clear();
-    callback();
+    redirect();
   };
 
   const value: AuthContextType = { user, signin, signout, error, setError };

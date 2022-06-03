@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+
 import { AuthContext } from "./AuthProvider";
-import "./LoginForm.css"
+
+import "./LoginForm.css";
 
 function LoginForm() {
-
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
 
@@ -24,16 +25,17 @@ function LoginForm() {
 
   const navigate = useNavigate();
   const state = useLocation().state as LocationState;
-  const auth = React.useContext(AuthContext);
   const pathname = state?.from?.pathname ?? "/";
+
+  const { signin, error, setError } = React.useContext(AuthContext);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (!(login && password)) {
-      auth.setError("All input is required")
+      setError("All input is required");
       return;
     }
-    auth.signin({ login, password }, () => {
+    signin({ login, password }, () => {
       navigate(pathname, { replace: true });
     });
   };
@@ -51,7 +53,7 @@ function LoginForm() {
           placeholder="Input password"
           onChange={onPasswordChange}
         ></input>
-        <span>{auth.error}</span>
+        <span>{error}</span>
         <input type="submit"></input>
       </form>
     </div>

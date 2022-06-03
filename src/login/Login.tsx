@@ -1,13 +1,15 @@
 import React from "react";
-import "./Login.css";
-import LoginForm from "./components/LoginForm";
 import { Navigate } from "react-router-dom";
+
+import LoginForm from "./components/LoginForm";
 import { AuthContext } from "./components/AuthProvider";
 
+import "./Login.css";
+
 function Login() {
-  const auth = React.useContext(AuthContext);
-  if (auth.user) {
-    return <Navigate to={"/dashboard/" + auth.user.role} replace />
+  const { user } = React.useContext(AuthContext);
+  if (user) {
+    return <Navigate to={"/dashboard/" + user.role} replace />;
   }
 
   return (
