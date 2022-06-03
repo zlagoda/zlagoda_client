@@ -12,13 +12,8 @@ function RouteProtector({
   const auth = React.useContext(AuthContext);
   const location = useLocation();
 
-  if (!auth.user) {
-    console.log(auth);
-    console.log("navigate to login");
+  if (!auth.user || role !== auth.user.role) {
     return <Navigate to="/" state={{ from: location }} replace />;
-  }
-  if (role !== auth.user.role) {
-    return <Navigate to={"/dashboard/" + auth.user.role} replace />
   }
 
   return children;
