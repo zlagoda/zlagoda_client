@@ -1,22 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
-import { AuthContext } from "./AuthProvider";
+import { AuthContext, Credentials } from "./AuthProvider";
 
 import "./LoginForm.css";
 
 function LoginForm() {
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
-
-  const onLoginChange = (event: React.FormEvent<HTMLInputElement>) => {
-    setLogin(event.currentTarget.value);
-  };
-
-  const onPasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
-    setPassword(event.currentTarget.value);
-  };
-
   interface LocationState {
     from: {
       pathname: string;
@@ -27,14 +17,11 @@ function LoginForm() {
   const state = useLocation().state as LocationState;
   const pathname = state?.from?.pathname ?? "/";
 
-  const { signin, error, setError } = React.useContext(AuthContext);
+  const { signin, error } = React.useContext(AuthContext);
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    if (!(login && password)) {
-      setError("All input is required");
-      return;
-    }
+  const { register, handleSubmit } = useForm<Credentials>();
+
+  const onSubmit = ({ login, password }: Credentials) => {
     signin({ login, password }, () => {
       navigate(pathname, { replace: true });
     });
@@ -42,16 +29,16 @@ function LoginForm() {
 
   return (
     <div className="login-form-container">
-      <form onSubmit={handleSubmit} className="login-form">
+      <form onSubmit={handleSubmit(onSubmit)} className="login-form">
         <input
           type="text"
           placeholder="Input login"
-          onChange={onLoginChange}
+          {...register("login", { required: "Login is required" })}
         ></input>
         <input
           type="password"
           placeholder="Input password"
-          onChange={onPasswordChange}
+          {...register("password", { required: "Password is required" })}
         ></input>
         <span>{error}</span>
         <input type="submit"></input>

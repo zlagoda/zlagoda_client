@@ -9,7 +9,7 @@ interface Token {
   exp: number;
 }
 
-interface Credentials {
+export interface Credentials {
   login: string;
   password: string;
 }
