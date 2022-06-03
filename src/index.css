@@ -1,25 +1,6 @@
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.app-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
-
-h1 {
-    color: #e5b80b;
-    font-size: 7vw;
-    animation-name: reflection;
-    animation-duration: 3s;
-    animation-iteration-count: infinite;
-}
-
-@keyframes reflection {
-    0% {color: #e5b80b;}
-    40% {opacity: 70%;}
-    100% {opacity: 100%;}
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
 }
