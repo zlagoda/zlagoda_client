@@ -18,8 +18,8 @@ interface AuthContextType {
   user: Token | null;
   signin: (credentials: Credentials, redirect: VoidFunction) => void;
   signout: (redirect: VoidFunction) => void;
-  error: string;
-  setError: Function;
+  serverError: string;
+  setServerError: Function;
 }
 
 export const AuthContext = React.createContext<AuthContextType>(null!);
@@ -34,7 +34,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     return null;
   };
   const [user, setUser] = React.useState<Token | null>(getJwt());
-  const [error, setError] = React.useState<string>("");
+  const [serverError, setServerError] = React.useState<string>("");
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -56,11 +56,11 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
           localStorage.setItem("jwt_token", res.data);
           const decoded: Token = jwtDecode(res.data);
           setUser(decoded);
-          setError("");
+          setServerError("");
           redirect();
         },
         (err) => {
-          setError(err.response.data);
+          setServerError(err.response.data);
         }
       );
   };
@@ -71,7 +71,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     redirect();
   };
 
-  const value: AuthContextType = { user, signin, signout, error, setError };
+  const value: AuthContextType = { user, signin, signout, serverError: serverError, setServerError: setServerError };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
