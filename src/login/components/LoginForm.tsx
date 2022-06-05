@@ -1,13 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
-import {
-  TextField,
-  Button,
-  Typography,
-  Paper,
-  Grid,
-} from "@mui/material";
+import { TextField, Button, Typography, Paper, Grid } from "@mui/material";
 
 import { AuthContext, Credentials } from "./AuthProvider";
 
@@ -48,64 +42,66 @@ function LoginForm() {
           justifyContent: "space-around",
         }}
       >
-        <Typography
-          align="center"
-          variant="h4"
-          fontWeight="bold"
-          color="#E5B80B"
-        >
-          ZLAGODA
-        </Typography>
-        <Controller
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                label="Login"
-                variant="filled"
-                error={!(errors.login == null)}
-                helperText={errors.login?.message}
-                fullWidth
-                sx={{ margin: "3px auto" }}
-              />
-            );
-          }}
-          control={control}
-          rules={{ required: "Login is required" }}
-          defaultValue=""
-          name="login"
-        />
-        <Controller
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                label="Password"
-                type="password"
-                variant="filled"
-                error={!(errors.password == null)}
-                helperText={errors.password?.message}
-                fullWidth
-                sx={{ margin: "3px auto" }}
-              />
-            );
-          }}
-          control={control}
-          rules={{ required: "Password is required" }}
-          name="password"
-          defaultValue=""
-        />
-        <Typography color={"#ff0000"} align="center">
-          {serverError}
-        </Typography>
-        <Button
-          variant="contained"
-          fullWidth
-          onClick={handleSubmit(onSubmit)}
-          sx={{ margin: "3px auto" }}
-        >
-          Log in
-        </Button>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Typography
+            align="center"
+            variant="h4"
+            fontWeight="bold"
+            color="#E5B80B"
+          >
+            ZLAGODA
+          </Typography>
+          <Controller
+            render={({ field }) => {
+              return (
+                <TextField
+                  {...field}
+                  label="Login"
+                  variant="filled"
+                  error={!(errors.login == null)}
+                  helperText={errors.login?.message}
+                  fullWidth
+                  sx={{ margin: "3px auto" }}
+                />
+              );
+            }}
+            control={control}
+            rules={{ required: "Login is required" }}
+            defaultValue=""
+            name="login"
+          />
+          <Controller
+            render={({ field }) => {
+              return (
+                <TextField
+                  {...field}
+                  label="Password"
+                  type="password"
+                  variant="filled"
+                  error={!(errors.password == null)}
+                  helperText={errors.password?.message}
+                  fullWidth
+                  sx={{ margin: "3px auto" }}
+                />
+              );
+            }}
+            control={control}
+            rules={{ required: "Password is required" }}
+            name="password"
+            defaultValue=""
+          />
+          <Typography color={"#ff0000"} align="center">
+            {serverError}
+          </Typography>
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{ margin: "3px auto" }}
+          >
+            Log in
+          </Button>
+        </form>
       </Paper>
     </Grid>
   );
