@@ -1,27 +1,19 @@
 import React from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import { Box, CssBaseline } from "@mui/material";
 
-import { AuthContext } from "../../login/components/AuthProvider";
+import NavigationDrawer from "./NavigationDrawer";
 
 function DashboardLayout() {
-  const { user, signout } = React.useContext(AuthContext);
-  const navigate = useNavigate();
-
   return (
     <>
-      <main>
-        <h2>Welcome to the dashboard page, {user?.login}!</h2>
-        <button
-          onClick={() => {
-            signout(() => {
-              navigate("/");
-            });
-          }}
-        >
-          Log out
-        </button>
-        <Outlet />
-      </main>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <NavigationDrawer />
+        <Box>
+          <Outlet />
+        </Box>
+      </Box>
     </>
   );
 }
