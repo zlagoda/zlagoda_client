@@ -3,18 +3,12 @@ import { useLocation, Navigate } from "react-router-dom";
 
 import { AuthContext } from "./AuthProvider";
 
-function RouteProtector({
-  children,
-  role = "cashier",
-}: {
-  children: JSX.Element;
-  role?: string;
-}) {
+function RouteProtector({ children }: { children: JSX.Element }) {
   const { user } = React.useContext(AuthContext);
   const location = useLocation();
 
-  if (!user || role !== user.role) {
-    return <Navigate to="/" state={{ from: location }} replace />;
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   return children;

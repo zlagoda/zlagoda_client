@@ -31,7 +31,7 @@ function LoginForm() {
   };
 
   return (
-    <Grid container lg={3} md={4} sm={6} xs={10}>
+    <Grid container item lg={3} md={4} sm={6} xs={10}>
       <Paper
         elevation={10}
         sx={{
@@ -43,14 +43,6 @@ function LoginForm() {
         }}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Typography
-            align="center"
-            variant="h4"
-            fontWeight="bold"
-            color="#E5B80B"
-          >
-            ZLAGODA
-          </Typography>
           <Controller
             render={({ field }) => {
               return (
