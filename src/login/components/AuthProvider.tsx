@@ -3,9 +3,7 @@ import axios from "axios";
 import jwtDecode from "jwt-decode";
 
 interface Token {
-  id: number;
   login: string;
-  role: string;
   exp: number;
 }
 
@@ -18,15 +16,15 @@ interface AuthContextType {
   user: Token | null;
   signin: (credentials: Credentials, redirect: VoidFunction) => void;
   signout: (redirect: VoidFunction) => void;
-  error: string;
-  setError: Function;
+  serverError: string;
+  setServerError: Function;
 }
 
 export const AuthContext = React.createContext<AuthContextType>(null!);
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
   const getJwt = (): Token | null => {
-    const token = localStorage.getItem("jwt_token");
+    const token = sessionStorage.getItem("jwt_token");
     if (token) {
       const decoded: Token = jwtDecode(token);
       return decoded;
@@ -34,7 +32,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     return null;
   };
   const [user, setUser] = React.useState<Token | null>(getJwt());
-  const [error, setError] = React.useState<string>("");
+  const [serverError, setServerError] = React.useState<string>("");
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -53,25 +51,33 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
       .post(process.env.REACT_APP_API_URL + "/login", { login, password })
       .then(
         (res) => {
-          localStorage.setItem("jwt_token", res.data);
-          const decoded: Token = jwtDecode(res.data);
+          sessionStorage.setItem("jwt_token", res.data.token);
+          const decoded: Token = jwtDecode(res.data.token);
           setUser(decoded);
-          setError("");
+          setServerError("");
+          axios.defaults.headers.common["Authorization"] =
+            "Bearer " + res.data.token;
           redirect();
         },
         (err) => {
-          setError(err.response.data);
+          setServerError(err.response.data.message);
         }
       );
   };
 
   const signout = (redirect: VoidFunction) => {
     setUser(null);
-    localStorage.clear();
+    sessionStorage.clear();
     redirect();
   };
 
-  const value: AuthContextType = { user, signin, signout, error, setError };
+  const value: AuthContextType = {
+    user,
+    signin,
+    signout,
+    serverError: serverError,
+    setServerError: setServerError,
+  };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

@@ -5,34 +5,24 @@ import Login from "./login/Login";
 import RouteProtector from "./login/components/RouteProtector";
 import AuthProvider from "./login/components/AuthProvider";
 import DashboardLayout from "./common/components/DashboardLayout";
-import Manager from "./manager/components/Manager";
-import Cashier from "./cashier/components/Cashier";
 
 function App() {
   return (
     <>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/dashboard" element={<DashboardLayout />}>
-            <Route
-              path="cashier"
-              element={
-                <RouteProtector role="cashier">
-                  <Cashier />
-                </RouteProtector>
-              }
-            />
-            <Route
-              path="manager"
-              element={
-                <RouteProtector role="manager">
-                  <Manager />
-                </RouteProtector>
-              }
-            />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/"
+            element={
+              <RouteProtector>
+                <DashboardLayout />
+              </RouteProtector>
+            }
+          >
+            <Route path="dashboard" element={<h1>Test</h1>} />
+            <Route path="*" element={<h1>404 Not found</h1>} />
           </Route>
-          <Route path="*" element={<h1>404 Not found</h1>} />
         </Routes>
       </AuthProvider>
     </>
